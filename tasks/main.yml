@@ -78,6 +78,29 @@
 
 - name: print hostvars[host]
   debug: var=hostvars[groups[hazelcast_group_name][0]]
+  
+- name: Stop Hazelcast service
+  ansible.builtin.service:
+    name: hazelcast
+    state: stopped
+  become: yes
+
+- name: Disable Hazelcast service
+  ansible.builtin.service:
+    name: hazelcast
+    enabled: no
+  become: yes
+
+- name: Remove Hazelcast service
+  ansible.builtin.file:
+    path: /etc/systemd/system/hazelcast.service
+    state: absent
+  become: yes
+
+- name: Reload systemd to reflect changes
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: yes
 
 - name: put Hazelcast config file
   template: 
@@ -90,18 +113,6 @@
     name: hazelcast 
     state: stopped
     enabled: no
-    
-- name: Disable Hazelcast service
-  systemd: 
-    name: hazelcast.service
-    state: stopped
-    daemon_reload: yes
-
-- name: Ensure  /etc/systemd/system/hazelcast.service does not exist 
-  ansible.builtin.file:
-    path:  /etc/systemd/system/hazelcast.service 
-    state: absent
-  become: yes  
 
 - name: put systemd unit file
   template: 
