@@ -67,40 +67,17 @@
     state: directory
     mode: '0777'
 
-- name: Create  /opt/hazelcast/config if it does not exist
-  ansible.builtin.file:
-    path: /opt/hazelcast/config
-    state: directory
-    mode: '0755'
-    
-# - name: print groups[hazelcast_group_name]
-#   debug: var=groups[hazelcast_group_name]
-
-# - name: print hostvars[host]
-#   debug: var=hostvars[groups[hazelcast_group_name][0]]
-
-# - name: Stop Hazelcast service
-#   ansible.builtin.service:
-#     name: hazelcast
-#     state: stopped
-#   become: yes
-
-# - name: Disable Hazelcast service
-#   ansible.builtin.service:
-#     name: hazelcast
-#     enabled: no
-#   become: yes
-
-# - name: Remove Hazelcast service
+# - name: Create  /opt/hazelcast/config if it does not exist
 #   ansible.builtin.file:
-#     path: /etc/systemd/system/hazelcast.service
-#     state: absent
-#   become: yes
+#     path: /opt/hazelcast/config
+#     state: directory
+#     mode: '0755'
+    
+- name: print groups[hazelcast_group_name]
+  debug: var=groups[hazelcast_group_name]
 
-# - name: Reload systemd to reflect changes
-#   ansible.builtin.systemd:
-#     daemon_reload: yes
-#   become: yes
+- name: print hostvars[host]
+  debug: var=hostvars[groups[hazelcast_group_name][0]]
 
 - name: put Hazelcast config file
   template: 
@@ -108,17 +85,11 @@
     dest: /opt/hazelcast/config/hazelcast.xml 
     backup: yes
 
-- name: configure hazelcast service but do not start
-  service: 
-    name: hazelcast 
-    state: stopped
-    enabled: no
-
 - name: put systemd unit file
   template: 
     src: hazelcast.service 
     dest: /etc/systemd/system/hazelcast.service 
-    backup: no
+    backup: yes
 
 - name: configure hazelcast service but do not start
   service: 
