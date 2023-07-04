@@ -116,7 +116,7 @@
 
 - name: put systemd unit file
   template: 
-    src: hazelcas4t.service 
+    src: hazelcast4.service 
     dest: /etc/systemd/system/hazelcast.service 
     backup: no
 
