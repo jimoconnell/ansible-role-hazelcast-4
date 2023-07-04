@@ -79,12 +79,6 @@
     dest: /opt/hazelcast/bin/hazelcast.xml 
     backup: yes
 
-- name: Stop Hazelcast service
-  ansible.builtin.service:
-    name: hazelcast
-    state: stopped
-  become: yes
-
 - name: Disable Hazelcast service
   ansible.builtin.service:
     name: hazelcast
