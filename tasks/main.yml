@@ -56,6 +56,7 @@
     path: /opt/hazelcast
     state: absent
   become: yes  
+
 - name: create /opt/hazelcast
   shell: cp -r /opt/hazelcast-enterprise-{{ hazelcast_version }} /opt/hazelcast creates=/opt/hazelcast
  # /opt/hazelcast/config
@@ -79,24 +80,31 @@
     dest: /opt/hazelcast/bin/hazelcast.xml 
     backup: yes
 
-# - name: Disable Hazelcast service
-#   ansible.builtin.service:
-#     name: hazelcast
-#     enabled: no
-#   become: yes
+- name: Stop Hazelcast service if exists
+  ansible.builtin.service:
+    name: hazelcast
+    state: stopped
+  become: yes
+  ignore_errors: yes
+
+- name: Disable Hazelcast service if exists
+  ansible.builtin.service:
+    name: hazelcast
+    enabled: no
+  become: yes
+  ignore_errors: yes
+
+- name: Remove Hazelcast service if exists
+  ansible.builtin.file:
+    path: /etc/systemd/system/hazelcast.service
+    state: absent
+  become: yes
+  ignore_errors: yes
 
 - name: Reload systemd to reflect changes
   ansible.builtin.systemd:
     daemon_reload: yes
   become: yes
-
-- name: Remove Hazelcast service
-  ansible.builtin.file:
-    path: /etc/systemd/system/hazelcast.service
-    state: absent
-  become: yes
-
-
 
 - name: put systemd unit file
   template: 
