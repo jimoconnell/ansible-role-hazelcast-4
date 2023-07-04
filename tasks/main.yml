@@ -79,11 +79,11 @@
     dest: /opt/hazelcast/bin/hazelcast.xml 
     backup: yes
 
-- name: Disable Hazelcast service
-  ansible.builtin.service:
-    name: hazelcast
-    enabled: no
-  become: yes
+# - name: Disable Hazelcast service
+#   ansible.builtin.service:
+#     name: hazelcast
+#     enabled: no
+#   become: yes
 
 - name: Reload systemd to reflect changes
   ansible.builtin.systemd:
