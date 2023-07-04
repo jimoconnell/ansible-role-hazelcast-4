@@ -1,0 +1,6 @@
+[Service]
+Environment="MIN_HEAP_SIZE=4G"
+Environment="MAX_HEAP_SIZE=4G"
+Type=simple
+ExecStart=/opt/hazelcast/bin/hz-start
+Restart=always

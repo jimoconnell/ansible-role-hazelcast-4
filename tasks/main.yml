@@ -1,0 +1,98 @@
+- name: Ensure Hazelcast group exists
+  ansible.builtin.group:
+    name: hazelcast
+    state: present
+
+- name: Ensure Hazelcast user exists and is in the Hazelcast group
+  ansible.builtin.user:
+    name: hazelcast
+    group: hazelcast
+    createhome: yes
+    state: present
+
+- name: Install unzip on Debian-based systems
+  apt:
+    name: unzip
+    state: present
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+  become: yes
+
+- name: Install unzip on RedHat-based systems
+  yum:
+    name: unzip
+    state: present
+  when: ansible_os_family == "RedHat"
+  become: yes
+
+- name: Install Java 17 on Debian-based systems
+  apt:
+    name: openjdk-17-jdk
+    state: present
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+  become: yes
+
+- name: Install Java 17 on RedHat-based systems
+  yum:
+    name: java-17-openjdk-devel
+    state: present
+  when: ansible_os_family == "RedHat"
+  become: yes
+
+- name: download Hazelcast
+  get_url: 
+    url: https://repository.hazelcast.com/download/hazelcast-enterprise/hazelcast-enterprise-{{ hazelcast_version }}.zip 
+    dest: /root/hazelcast-enterprise-{{ hazelcast_version }}.zip
+  
+- name: unarchive Hazelcast
+  unarchive: 
+    src: /root/hazelcast-enterprise-{{ hazelcast_version }}.zip 
+    remote_src: True 
+    dest: /opt
+
+- name: Ensure /opt/hazelcast does not exist (in case you are changing versions.)
+  ansible.builtin.file:
+    path: /opt/hazelcast
+    state: absent
+  become: yes  
+- name: create /opt/hazelcast
+  shell: cp -r /opt/hazelcast-enterprise-{{ hazelcast_version }} /opt/hazelcast creates=/opt/hazelcast
+ # /opt/hazelcast/config
+ 
+  
+- name: Create  /opt/hazelcast/logs if it does not exist
+  ansible.builtin.file:
+    path: /opt/hazelcast/logs
+    state: directory
+    mode: '0777'
+
+- name: Create  /opt/hazelcast/config if it does not exist
+  ansible.builtin.file:
+    path: /opt/hazelcast/config
+    state: directory
+    mode: '0755'
+    
+- name: print groups[hazelcast_group_name]
+  debug: var=groups[hazelcast_group_name]
+
+- name: print hostvars[host]
+  debug: var=hostvars[groups[hazelcast_group_name][0]]
+
+- name: put Hazelcast config file
+  template: 
+    src: hazelcast.xml 
+    dest: /opt/hazelcast/config/hazelcast.xml 
+    backup: yes
+
+- name: put systemd unit file
+  template: 
+    src: hazelcast.service 
+    dest: /etc/systemd/system/hazelcast.service 
+    backup: yes
+
+- name: configure hazelcast service but do not start
+  service: 
+    name: hazelcast 
+    state: stopped
+    enabled: no
