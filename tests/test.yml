@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - ansible-role-hazelcast
+    - ansible-role-hazelcast-4
