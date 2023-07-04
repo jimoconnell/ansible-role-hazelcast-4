@@ -79,17 +79,17 @@
 # - name: print hostvars[host]
 #   debug: var=hostvars[groups[hazelcast_group_name][0]]
 
-- name: Stop Hazelcast service
-  ansible.builtin.service:
-    name: hazelcast
-    state: stopped
-  become: yes
+# - name: Stop Hazelcast service
+#   ansible.builtin.service:
+#     name: hazelcast
+#     state: stopped
+#   become: yes
 
-- name: Disable Hazelcast service
-  ansible.builtin.service:
-    name: hazelcast
-    enabled: no
-  become: yes
+# - name: Disable Hazelcast service
+#   ansible.builtin.service:
+#     name: hazelcast
+#     enabled: no
+#   become: yes
 
 # - name: Remove Hazelcast service
 #   ansible.builtin.file:
