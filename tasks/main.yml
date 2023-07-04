@@ -73,11 +73,11 @@
     state: directory
     mode: '0755'
     
-- name: print groups[hazelcast_group_name]
-  debug: var=groups[hazelcast_group_name]
+# - name: print groups[hazelcast_group_name]
+#   debug: var=groups[hazelcast_group_name]
 
-- name: print hostvars[host]
-  debug: var=hostvars[groups[hazelcast_group_name][0]]
+# - name: print hostvars[host]
+#   debug: var=hostvars[groups[hazelcast_group_name][0]]
 
 - name: Stop Hazelcast service
   ansible.builtin.service:
