@@ -85,6 +85,12 @@
     dest: /opt/hazelcast/config/hazelcast.xml 
     backup: yes
 
+- name: Ensure  /etc/systemd/system/hazelcast.service does not exist 
+  ansible.builtin.file:
+    path:  /etc/systemd/system/hazelcast.service 
+    state: absent
+  become: yes  
+
 - name: put systemd unit file
   template: 
     src: hazelcast.service 
