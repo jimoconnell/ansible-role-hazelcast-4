@@ -82,7 +82,7 @@
 - name: put Hazelcast config file
   template: 
     src: hazelcast.xml 
-    dest: /opt/hazelcast/config/hazelcast.xml 
+    dest: /opt/hazelcast/bin/hazelcast.xml 
     backup: yes
 
 - name: put systemd unit file
