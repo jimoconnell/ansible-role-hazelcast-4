@@ -95,4 +95,4 @@
   service: 
     name: hazelcast 
     state: stopped
-    enabled: no
+    enabled: yes
