@@ -85,6 +85,18 @@
     dest: /opt/hazelcast/config/hazelcast.xml 
     backup: yes
 
+- name: configure hazelcast service but do not start
+  service: 
+    name: hazelcast 
+    state: stopped
+    enabled: no
+    
+- name: Disable Hazelcast service
+  systemd: 
+    name: hazelcast.service
+    state: stopped
+    daemon_reload: yes
+
 - name: Ensure  /etc/systemd/system/hazelcast.service does not exist 
   ansible.builtin.file:
     path:  /etc/systemd/system/hazelcast.service 
