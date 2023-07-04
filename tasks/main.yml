@@ -85,16 +85,18 @@
     enabled: no
   become: yes
 
+- name: Reload systemd to reflect changes
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: yes
+
 - name: Remove Hazelcast service
   ansible.builtin.file:
     path: /etc/systemd/system/hazelcast.service
     state: absent
   become: yes
 
-- name: Reload systemd to reflect changes
-  ansible.builtin.systemd:
-    daemon_reload: yes
-  become: yes
+
 
 - name: put systemd unit file
   template: 
