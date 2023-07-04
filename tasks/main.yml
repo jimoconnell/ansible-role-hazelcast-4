@@ -81,13 +81,13 @@
 
 - name: Stop Hazelcast service
   ansible.builtin.service:
-    name: hazelcast4
+    name: hazelcast
     state: stopped
   become: yes
 
 - name: Disable Hazelcast service
   ansible.builtin.service:
-    name: hazelcast4
+    name: hazelcast
     enabled: no
   become: yes
 
@@ -110,18 +110,18 @@
 
 - name: configure hazelcast service but do not start
   service: 
-    name: hazelcast4 
+    name: hazelcast 
     state: stopped
     enabled: no
 
 - name: put systemd unit file
   template: 
     src: hazelcas4t.service 
-    dest: /etc/systemd/system/hazelcast4.service 
+    dest: /etc/systemd/system/hazelcast.service 
     backup: no
 
 - name: configure hazelcast service but do not start
   service: 
-    name: hazelcast4 
+    name: hazelcast 
     state: stopped
     enabled: no
